@@ -40,4 +40,13 @@ public class JobPosting {
         this.skills = skills;
     }
 
+    public void updateJobPosting(String position, String description, String country, String district, int reward, String skills) {
+        this.position = position;
+        this.description = description;
+        this.country = country;
+        this.district = district;
+        this.reward = reward;
+        this.skills = skills;
+    }
+
 }

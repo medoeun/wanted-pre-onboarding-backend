@@ -23,15 +23,44 @@ public class JobPostingService {
     @Autowired
     private final CompanyRepository companyRepository;
 
-    // 아래 있는 함수가 시작될 때 start transaction;을 해준다 (트랜잭션을 시작!)
-    // 함수가 예외 없이 잘 끝났다면 commit
-    // 혹시라도 문제가 있다면 rollback
+
+    // 채용공고 등록
     @Transactional
     public void createJobPosting(JobPostingDTO jobPostingDTO) {
 //        Company company = companyRepository.findById(jobPostingDTO.getCompanyId())
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + jobPostingDTO.getCompanyId()));
+//                .orElseThrow(() -> new IllegalArgumentException("잘못된 companyID: " + jobPostingDTO.getCompanyId()));
 
-        jobPostingRepository.save(new JobPosting(jobPostingDTO.getCompanyId(), jobPostingDTO.getPosition(), jobPostingDTO.getDescription(), jobPostingDTO.getCountry(), jobPostingDTO.getDistrict(), jobPostingDTO.getReward(), jobPostingDTO.getSkills()));
+        jobPostingRepository.save(new JobPosting(
+                jobPostingDTO.getCompanyId(),
+                jobPostingDTO.getPosition(),
+                jobPostingDTO.getDescription(),
+                jobPostingDTO.getCountry(),
+                jobPostingDTO.getDistrict(),
+                jobPostingDTO.getReward(),
+                jobPostingDTO.getSkills()
+        ));
+    }
+
+    // 채용공고 수정 (회사 id 이외)
+    @Transactional
+    public void updateJobPosting(Long id, JobPostingDTO jobPostingDTO) {
+        JobPosting jobPosting = jobPostingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 postingID: " + id));
+
+        jobPosting.updateJobPosting(
+                jobPostingDTO.getPosition(),
+                jobPostingDTO.getDescription(),
+                jobPostingDTO.getCountry(),
+                jobPostingDTO.getDistrict(),
+                jobPostingDTO.getReward(),
+                jobPostingDTO.getSkills()
+        );
+
+        jobPostingRepository.save(jobPosting);
+    }
+
+    // 채용공고 삭제
+    public void deleteJobPosting(Long id) {
 
     }
 
