@@ -60,8 +60,12 @@ public class JobPostingService {
     }
 
     // 채용공고 삭제
+    @Transactional
     public void deleteJobPosting(Long id) {
+        JobPosting jobPosting = jobPostingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 postingID: " + id));
 
+        jobPostingRepository.delete(jobPosting);
     }
 
 }

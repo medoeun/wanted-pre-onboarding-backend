@@ -79,4 +79,27 @@ class JobPostingServiceTest {
         verify(jobPostingRepository).findById(eq(1L));
         verify(jobPostingRepository).save(any(JobPosting.class));
     }
+
+    @Test
+    public void testDeleteJobPosting() {
+        JobPosting existingJobPosting = new JobPosting(
+                1L,
+                "Software Engineer",
+                "Develop software applications",
+                "한국",
+                "서울",
+                5000,
+                "Java, Spring"
+        );
+
+        when(jobPostingRepository.findById(eq(1L))).thenReturn(Optional.of(existingJobPosting));
+
+        // 삭제
+        jobPostingService.deleteJobPosting(1L);
+
+        verify(jobPostingRepository).findById(eq(1L));
+        verify(jobPostingRepository).delete(any(JobPosting.class));
+    }
+
+
 }

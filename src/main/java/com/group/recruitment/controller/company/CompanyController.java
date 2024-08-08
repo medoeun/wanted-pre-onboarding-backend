@@ -29,7 +29,7 @@ public class CompanyController {
 
 
     // 채용공고 삭제
-    @DeleteMapping("/jobs")
+    @DeleteMapping("/jobs/{id}")
     public void deleteJobPosting(@RequestParam Long id) {
         jobPostingService.deleteJobPosting(id);
     }
