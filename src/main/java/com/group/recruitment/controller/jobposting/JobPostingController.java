@@ -1,19 +1,17 @@
-package com.group.recruitment.controller.company;
+package com.group.recruitment.controller.jobposting;
 
 import com.group.recruitment.dto.job.JobPostingDTO;
 import com.group.recruitment.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-public class CompanyController {
+public class JobPostingController {
 
     @Autowired
     private JobPostingService jobPostingService;
-
-    // 조회
-
 
     // 채용공고 등록
     @PostMapping("/jobs")
@@ -27,11 +25,21 @@ public class CompanyController {
         jobPostingService.updateJobPosting(id, jobPostingDTO);
     }
 
-
     // 채용공고 삭제
     @DeleteMapping("/jobs/{id}")
-    public void deleteJobPosting(@RequestParam Long id) {
+    public void deleteJobPosting(@PathVariable("id") Long id) {
         jobPostingService.deleteJobPosting(id);
     }
 
+    // 채용공고 목록 조회
+    @GetMapping("/jobs")
+    public List<JobPostingDTO> readJobPostings() {
+        return jobPostingService.readJobPostings();
+    }
+
+    // 채용공고 키워드 검색
+    @GetMapping("/jobs/search")
+    public List<JobPostingDTO> searchJobPostings(@RequestParam String keyword) {
+        return jobPostingService.searchJobPostings(keyword);
+    }
 }

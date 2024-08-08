@@ -6,10 +6,12 @@ import com.group.recruitment.domain.job.JobPosting;
 import com.group.recruitment.dto.company.CompanyRepository;
 import com.group.recruitment.dto.job.JobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.util.Optional;
 
@@ -68,4 +70,15 @@ public class JobPostingService {
         jobPostingRepository.delete(jobPosting);
     }
 
+    // 채용공고 목록 조회
+    @Transactional(readOnly = true)
+    public List<JobPostingDTO> readJobPostings() {
+        return jobPostingRepository.readJobPostings();
+    }
+
+    // 채용공고 키워드 검색
+    @Transactional(readOnly = true)
+    public List<JobPostingDTO> searchJobPostings(String keyword) {
+        return jobPostingRepository.searchJobPostings(keyword);
+    }
 }
