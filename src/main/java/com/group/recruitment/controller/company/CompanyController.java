@@ -22,8 +22,8 @@ public class CompanyController {
     }
 
     // 채용공고 수정
-    @PutMapping("/jobs/{id}")
-    public void updateJobPosting(@PathVariable Long id, @RequestBody JobPostingDTO jobPostingDTO) {
+    @PutMapping("/jobs/{id}")   // 에러해결: 1) @PathVariable 속성 이름 기재, 2) -parameters 옵션
+    public void updateJobPosting(@PathVariable("id") Long id, @RequestBody JobPostingDTO jobPostingDTO) {
         jobPostingService.updateJobPosting(id, jobPostingDTO);
     }
 
