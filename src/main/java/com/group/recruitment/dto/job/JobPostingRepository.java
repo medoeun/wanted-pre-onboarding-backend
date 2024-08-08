@@ -12,17 +12,15 @@ import java.util.List;
 public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
 
     // 채용공고 모두 조회
-    @Query("SELECT com.group.recruitment.dto.job.JobPostingDTO(j.id, c.name, j.country, j.district, j.position, j.reward, j.skills) " +
-            "FROM JobPosting j JOIN Company c ON j.companyId = c.id")
+    @Query("SELECT new com.group.recruitment.dto.job.JobPostingDTO(j.postingId, c.companyName, j.country, j.district, j.position, j.reward, j.skills) " +
+            "FROM JobPosting j JOIN Company c ON j.companyId = c.companyId")
     List<JobPostingDTO> readJobPostings();
 
     // 키워드 기반 채용공고 검색
-    @Query("SELECT com.group.recruitment.dto.job.JobPostingDTO(j.id, c.name, j.country, j.district, j.position, j.reward, j.skills) " +
-            "FROM JobPosting j JOIN Company c ON j.companyId = c.id " +
-            "WHERE c.name LIKE %:keyword% " +
+    @Query("SELECT new com.group.recruitment.dto.job.JobPostingDTO(j.postingId, c.companyName, j.country, j.district, j.position, j.reward, j.skills) " +
+            "FROM JobPosting j JOIN Company c ON j.companyId = c.companyId " +
+            "WHERE c.companyName LIKE %:keyword% " +
             "OR j.position LIKE %:keyword% " +
-            "OR j.skills LIKE %:keyword%"
-            // 더 추가
-    )
+            "OR j.skills LIKE %:keyword%")
     List<JobPostingDTO> searchJobPostings(@Param("keyword") String keyword);
 }
