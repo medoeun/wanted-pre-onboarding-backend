@@ -40,7 +40,7 @@ public class JobPostingController {
 
     // 채용공고 키워드 검색
     @GetMapping("/jobs/search")
-    public List<JobPostingDTO> searchJobPostings(@RequestParam String keyword) {
+    public List<JobPostingDTO> searchJobPostings(@RequestParam("keyword") String keyword) {
         return jobPostingService.searchJobPostings(keyword);
     }
 }
