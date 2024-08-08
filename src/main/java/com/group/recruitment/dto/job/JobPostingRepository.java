@@ -1,6 +1,5 @@
 package com.group.recruitment.dto.job;
 
-import com.group.recruitment.domain.company.Company;
 import com.group.recruitment.domain.job.JobPosting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +21,8 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
             "FROM JobPosting j JOIN Company c ON j.companyId = c.id " +
             "WHERE c.name LIKE %:keyword% " +
             "OR j.position LIKE %:keyword% " +
-            "OR j.skills LIKE %:keyword%")
+            "OR j.skills LIKE %:keyword%"
+            // 더 추가
+    )
     List<JobPostingDTO> searchJobPostings(@Param("keyword") String keyword);
 }

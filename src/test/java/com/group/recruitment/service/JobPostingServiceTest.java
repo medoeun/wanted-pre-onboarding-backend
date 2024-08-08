@@ -1,8 +1,7 @@
 package com.group.recruitment.service;
 
 import com.group.recruitment.domain.job.JobPosting;
-import com.group.recruitment.dto.company.CompanyRepository;
-import com.group.recruitment.dto.job.JobPostingDTO;
+import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +26,7 @@ class JobPostingServiceTest {
     @Test
     void createJobPosting() {
         //given
-        JobPostingDTO jobPostingDTO = new JobPostingDTO(
+        CreateJobPostingDTO createJobPostingDTO = new CreateJobPostingDTO(
                 1L,
                 "Software Engineer",
                 "Develop software applications",
@@ -42,7 +40,7 @@ class JobPostingServiceTest {
         when(jobPostingRepository.save(any(JobPosting.class))).thenReturn(new JobPosting());
 
         // 실행
-        jobPostingService.createJobPosting(jobPostingDTO);
+        jobPostingService.createJobPosting(createJobPostingDTO);
 
         // save가 JobPosting과 함께 한 번 호출되었는지
         verify(jobPostingRepository).save(any(JobPosting.class));
@@ -63,7 +61,7 @@ class JobPostingServiceTest {
         when(jobPostingRepository.findById(eq(1L))).thenReturn(Optional.of(existingJobPosting));
 
         // 업데이트 할 공고
-        JobPostingDTO updatedJobPostingDTO = new JobPostingDTO(
+        CreateJobPostingDTO updatedCreateJobPostingDTO = new CreateJobPostingDTO(
                 1L,
                 "Senior Software Engineer",
                 "Develop and lead software applications",
@@ -74,7 +72,7 @@ class JobPostingServiceTest {
         );
 
         // 실행
-        jobPostingService.updateJobPosting(1L,updatedJobPostingDTO);
+        jobPostingService.updateJobPosting(1L, updatedCreateJobPostingDTO);
 
         verify(jobPostingRepository).findById(eq(1L));
         verify(jobPostingRepository).save(any(JobPosting.class));

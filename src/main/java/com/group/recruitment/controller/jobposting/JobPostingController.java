@@ -1,5 +1,6 @@
 package com.group.recruitment.controller.jobposting;
 
+import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
 import com.group.recruitment.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,14 @@ public class JobPostingController {
 
     // 채용공고 등록
     @PostMapping("/jobs")
-    public void createJobPosting(@RequestBody JobPostingDTO jobPostingDTO) {
-        jobPostingService.createJobPosting(jobPostingDTO);
+    public void createJobPosting(@RequestBody CreateJobPostingDTO createJobPostingDTO) {
+        jobPostingService.createJobPosting(createJobPostingDTO);
     }
 
     // 채용공고 수정
     @PutMapping("/jobs/{id}")   // 에러해결: 1) @PathVariable 속성 이름 기재, 2) -parameters 옵션
-    public void updateJobPosting(@PathVariable("id") Long id, @RequestBody JobPostingDTO jobPostingDTO) {
-        jobPostingService.updateJobPosting(id, jobPostingDTO);
+    public void updateJobPosting(@PathVariable("id") Long id, @RequestBody CreateJobPostingDTO createJobPostingDTO) {
+        jobPostingService.updateJobPosting(id, createJobPostingDTO);
     }
 
     // 채용공고 삭제
