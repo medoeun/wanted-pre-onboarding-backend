@@ -50,7 +50,6 @@
 
 ```bash
 git clone https://github.com/medoeun/wanted-pre-onboarding-backend.git
-cd wanted-pre-onboarding-backend
 ```
 <br>
 
