@@ -33,7 +33,7 @@ class JobPostingServiceTest {
     private JobPostingService jobPostingService;
 
     @Test
-    void testCreateJobPosting() {
+    void 채용공고_등록() {
         //given
         CreateJobPostingDTO createJobPostingDTO = new CreateJobPostingDTO(
                 1L,
@@ -45,6 +45,10 @@ class JobPostingServiceTest {
                 "Java, Spring"
         );
 
+        // companyId가 1L인 Company 객체를 모킹
+        Company mockCompany = new Company(1L, "Mock Company");
+        when(companyRepository.findById(1L)).thenReturn(Optional.of(mockCompany));
+
         when(jobPostingRepository.save(any(JobPosting.class))).thenReturn(new JobPosting());
 
         // Create
@@ -55,7 +59,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    void testUpdateJobPosting() {
+    void 채용공고_수정() {
         JobPosting existingJobPosting = new JobPosting(
                 1L,
                 "Software Engineer",
@@ -87,7 +91,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    void testDeleteJobPosting() {
+    void 채용공고_삭제() {
         JobPosting existingJobPosting = new JobPosting(
                 1L,
                 "Software Engineer",
@@ -108,7 +112,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    void testReadJobPostings() {
+    void 채용공고_조회() {
 
         List<JobPostingDTO> jobPostings = Arrays.asList(
                 new JobPostingDTO(1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python"),
@@ -128,7 +132,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    void testSearchJobPostings() {
+    void 채용공고_검색() {
         List<JobPostingDTO> jobPostings = Arrays.asList(
                 new JobPostingDTO(1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python")
         );
@@ -146,7 +150,7 @@ class JobPostingServiceTest {
 
     // 키워드 검색결과 없을 시
     @Test
-    void testSearchJobPostings_NoResults() {
+    void 채용공고_검색_결과없음() {
         when(jobPostingRepository.searchJobPostings(eq("아무거나"))).thenReturn(Collections.emptyList());
 
         List<JobPostingDTO> result = jobPostingService.searchJobPostings("아무거나");
@@ -157,7 +161,7 @@ class JobPostingServiceTest {
     
     // 상세페이지 조회
     @Test
-    void testReadJobPostingDetail() {
+    void 채용_상세페이지() {
         Long postingId = 1L;
         JobPosting jobPosting = new JobPosting(postingId, 1L, "백엔드 주니어 개발자", "백엔드 개발자를 채용합니다. 자격요건은..", "한국", "서울", 1000000, "Python");
         Company company = new Company(1L, "원티드랩");

@@ -21,7 +21,7 @@ class JobApplicationServiceTest {
 
     // 공고 지원 성공
     @Test
-    void testApplyForJob() {
+    void 채용공고_지원() {
         Long postingId = 1L;
         Long userId = 1L;
 
@@ -35,7 +35,7 @@ class JobApplicationServiceTest {
 
     // 이미 지원한 공고
     @Test
-    void testApplyForJob_AlreadyApplied() {
+    void 이미_지원한_공고() {
         Long postingId = 1L;
         Long userId = 1L;
 

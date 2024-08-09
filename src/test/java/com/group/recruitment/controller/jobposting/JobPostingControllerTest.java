@@ -60,14 +60,12 @@ class JobPostingControllerTest {
         );      // otherJobPostingIds: Arrays.asList(2L)
 
         when(jobPostingService.readJobPostingDetail(1L)).thenReturn(jobPostingDetail);
-
-
     }
 
 
     // 전체공고 조회
     @Test
-    void testReadJobPostings() throws Exception {
+    void 채용공고_조회() throws Exception {
         mockMvc.perform(get("/jobs"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].companyName").value("원티드랩"))
@@ -76,7 +74,7 @@ class JobPostingControllerTest {
 
     // 공고 키워드 검색
     @Test
-    void testSearchJobPostings() throws Exception {
+    void 채용공고_검색() throws Exception {
         mockMvc.perform(get("/jobs/search")
                         .param("keyword", "백엔드"))
                 .andExpect(status().isOk())
@@ -85,7 +83,7 @@ class JobPostingControllerTest {
 
     // 채용 상세페이지
     @Test
-    void testReadJobPostingDetails() throws Exception {
+    void 채용_상세페이지() throws Exception {
         mockMvc.perform(get("/jobs/{postingId}", 1L))
                 .andExpect(status().isOk()) // 200ok 확인
                 .andExpect(jsonPath("$.companyName").value("원티드랩"))
@@ -100,7 +98,7 @@ class JobPostingControllerTest {
 
     // 채용 상세페이지에서 지원
     @Test
-    void testApplyForJob() throws Exception {
+    void 채용공고_지원() throws Exception {
         doNothing().when(jobApplicationService).applyForJob(1L, 1L);
 
         mockMvc.perform(post("/jobs/{postingId}/apply",1L)
@@ -111,7 +109,7 @@ class JobPostingControllerTest {
 
     // 이미 지원한 공고
     @Test
-    void testApplyForjob_AlreadyApplied() throws Exception {
+    void 이미_지원한_공고() throws Exception {
         doThrow(new IllegalArgumentException("이 공고에 이미 지원한 사용자입니다."))
                 .when(jobApplicationService).applyForJob(1L, 1L);
 

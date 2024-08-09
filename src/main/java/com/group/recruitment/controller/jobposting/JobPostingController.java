@@ -68,5 +68,4 @@ public class JobPostingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  //400 Bad Request
         }
     }
-
 }
