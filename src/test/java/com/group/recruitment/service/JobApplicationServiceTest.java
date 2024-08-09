@@ -1,7 +1,7 @@
 package com.group.recruitment.service;
 
 import com.group.recruitment.domain.job.JobApplication;
-import com.group.recruitment.dto.job.JobApplicationRepository;
+import com.group.recruitment.repository.job.JobApplicationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

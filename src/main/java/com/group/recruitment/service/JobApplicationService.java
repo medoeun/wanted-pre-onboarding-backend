@@ -1,7 +1,7 @@
 package com.group.recruitment.service;
 
 import com.group.recruitment.domain.job.JobApplication;
-import com.group.recruitment.dto.job.JobApplicationRepository;
+import com.group.recruitment.repository.job.JobApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

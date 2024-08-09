@@ -1,6 +1,7 @@
-package com.group.recruitment.dto.job;
+package com.group.recruitment.repository.job;
 
 import com.group.recruitment.domain.job.JobPosting;
+import com.group.recruitment.dto.job.JobPostingDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

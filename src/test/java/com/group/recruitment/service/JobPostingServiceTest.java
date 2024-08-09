@@ -2,11 +2,11 @@ package com.group.recruitment.service;
 
 import com.group.recruitment.domain.company.Company;
 import com.group.recruitment.domain.job.JobPosting;
-import com.group.recruitment.dto.company.CompanyRepository;
+import com.group.recruitment.repository.company.CompanyRepository;
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDetailDTO;
-import com.group.recruitment.dto.job.JobPostingRepository;
+import com.group.recruitment.repository.job.JobPostingRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

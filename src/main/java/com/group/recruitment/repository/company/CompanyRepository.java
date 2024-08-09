@@ -1,4 +1,4 @@
-package com.group.recruitment.dto.company;
+package com.group.recruitment.repository.company;
 
 import com.group.recruitment.domain.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
