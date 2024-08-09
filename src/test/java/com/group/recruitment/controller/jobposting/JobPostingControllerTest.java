@@ -2,8 +2,10 @@ package com.group.recruitment.controller.jobposting;
 
 
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
+import com.group.recruitment.dto.job.JobApplicationDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDetailDTO;
+import com.group.recruitment.service.JobApplicationService;
 import com.group.recruitment.service.JobPostingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -31,6 +34,9 @@ class JobPostingControllerTest {
 
     @MockBean
     private JobPostingService jobPostingService;
+
+    @MockBean
+    private JobApplicationService jobApplicationService;
 
     @BeforeEach
     void setUp() {
@@ -55,38 +61,31 @@ class JobPostingControllerTest {
 
         when(jobPostingService.readJobPostingDetail(1L)).thenReturn(jobPostingDetail);
 
+
     }
 
-    @Test
-    void createJobPosting() {
-    }
 
+    // 전체공고 조회
     @Test
-    void updateJobPosting() {
-    }
-
-    @Test
-    void deleteJobPosting() {
-    }
-
-    @Test
-    public void testReadJobPostings() throws Exception {
+    void testReadJobPostings() throws Exception {
         mockMvc.perform(get("/jobs"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].companyName").value("원티드랩"))
                 .andExpect(jsonPath("$[1].companyName").value("네이버"));
     }
 
+    // 공고 키워드 검색
     @Test
-    public void testSearchJobPostings() throws Exception {
+    void testSearchJobPostings() throws Exception {
         mockMvc.perform(get("/jobs/search")
                         .param("keyword", "백엔드"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].companyName").value("원티드랩"));
     }
 
+    // 채용 상세페이지
     @Test
-    public void testReadJobPostingDetails() throws Exception {
+    void testReadJobPostingDetails() throws Exception {
         mockMvc.perform(get("/jobs/{postingId}", 1L))
                 .andExpect(status().isOk()) // 200ok 확인
                 .andExpect(jsonPath("$.companyName").value("원티드랩"))
@@ -99,4 +98,26 @@ class JobPostingControllerTest {
                 .andExpect(jsonPath("$.otherJobPostingIds[0]").value(2L));
     }
 
+    // 채용 상세페이지에서 지원
+    @Test
+    void testApplyForJob() throws Exception {
+        doNothing().when(jobApplicationService).applyForJob(1L, 1L);
+
+        mockMvc.perform(post("/jobs/{postingId}/apply",1L)
+                        .contentType("application/json")
+                        .content("{\"postingId\":1,\"userId\":1}"))
+                .andExpect(status().isCreated());   // 201 Created
+    }
+
+    // 이미 지원한 공고
+    @Test
+    void testApplyForjob_AlreadyApplied() throws Exception {
+        doThrow(new IllegalArgumentException("이 공고에 이미 지원한 사용자입니다."))
+                .when(jobApplicationService).applyForJob(1L, 1L);
+
+        mockMvc.perform(post("/jobs/{postingId}/apply", 1L)
+                        .contentType("application/json")
+                        .content("{\"postingId\":1,\"userId\":1}"))
+                .andExpect(status().isBadRequest());   // 400
+    }
 }

@@ -13,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +33,7 @@ class JobPostingServiceTest {
     private JobPostingService jobPostingService;
 
     @Test
-    void createJobPosting() {
+    void testCreateJobPosting() {
         //given
         CreateJobPostingDTO createJobPostingDTO = new CreateJobPostingDTO(
                 1L,
@@ -58,7 +55,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    public void testUpdateJobPosting() {
+    void testUpdateJobPosting() {
         JobPosting existingJobPosting = new JobPosting(
                 1L,
                 "Software Engineer",
@@ -90,7 +87,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    public void testDeleteJobPosting() {
+    void testDeleteJobPosting() {
         JobPosting existingJobPosting = new JobPosting(
                 1L,
                 "Software Engineer",
@@ -111,7 +108,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    public void testReadJobPostings() {
+    void testReadJobPostings() {
 
         List<JobPostingDTO> jobPostings = Arrays.asList(
                 new JobPostingDTO(1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python"),
@@ -131,7 +128,7 @@ class JobPostingServiceTest {
     }
 
     @Test
-    public void testSearchJobPostings() {
+    void testSearchJobPostings() {
         List<JobPostingDTO> jobPostings = Arrays.asList(
                 new JobPostingDTO(1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python")
         );
@@ -149,7 +146,7 @@ class JobPostingServiceTest {
 
     // 키워드 검색결과 없을 시
     @Test
-    public void testSearchJobPostings_NoResults() {
+    void testSearchJobPostings_NoResults() {
         when(jobPostingRepository.searchJobPostings(eq("아무거나"))).thenReturn(Collections.emptyList());
 
         List<JobPostingDTO> result = jobPostingService.searchJobPostings("아무거나");
@@ -160,7 +157,7 @@ class JobPostingServiceTest {
     
     // 상세페이지 조회
     @Test
-    public void testReadJobPostingDetail() {
+    void testReadJobPostingDetail() {
         Long postingId = 1L;
         JobPosting jobPosting = new JobPosting(postingId, 1L, "백엔드 주니어 개발자", "백엔드 개발자를 채용합니다. 자격요건은..", "한국", "서울", 1000000, "Python");
         Company company = new Company(1L, "원티드랩");
