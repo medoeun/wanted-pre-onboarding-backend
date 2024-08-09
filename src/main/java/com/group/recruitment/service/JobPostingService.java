@@ -1,15 +1,18 @@
 package com.group.recruitment.service;
 
 
+import com.group.recruitment.domain.company.Company;
 import com.group.recruitment.domain.job.JobPosting;
 import com.group.recruitment.dto.company.CompanyRepository;
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
+import com.group.recruitment.dto.job.JobPostingDetailDTO;
 import com.group.recruitment.dto.job.JobPostingRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -26,8 +29,8 @@ public class JobPostingService {
     // 채용공고 등록
     @Transactional
     public void createJobPosting(CreateJobPostingDTO createJobPostingDTO) {
-//        Company company = companyRepository.findById(createJobPostingDTO.getCompanyId())
-//                .orElseThrow(() -> new IllegalArgumentException("잘못된 companyID: " + createJobPostingDTO.getCompanyId()));
+        Company company = companyRepository.findById(createJobPostingDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 companyID: " + createJobPostingDTO.getCompanyId()));
 
         jobPostingRepository.save(new JobPosting(
                 createJobPostingDTO.getCompanyId(),
@@ -77,5 +80,29 @@ public class JobPostingService {
     @Transactional(readOnly = true)
     public List<JobPostingDTO> searchJobPostings(String keyword) {
         return jobPostingRepository.searchJobPostings(keyword);
+    }
+
+    // 채용공고 상세페이지
+    @Transactional
+    public JobPostingDetailDTO readJobPostingDetail(Long postingId) {
+        JobPosting jobPosting = jobPostingRepository.findById(postingId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 postingID: " + postingId));
+
+        Company company = companyRepository.findById(jobPosting.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + jobPosting.getCompanyId()));
+
+        List<Long> otherJobPostingIds = jobPostingRepository.otherJobPostings(company.getCompanyId(), postingId);
+
+        return new JobPostingDetailDTO(
+                jobPosting.getPostingId(),
+                company.getCompanyName(),
+                jobPosting.getCountry(),
+                jobPosting.getDistrict(),
+                jobPosting.getPosition(),
+                jobPosting.getReward(),
+                jobPosting.getSkills(),
+                jobPosting.getDescription(),
+                otherJobPostingIds
+        );
     }
 }

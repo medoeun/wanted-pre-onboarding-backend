@@ -2,6 +2,7 @@ package com.group.recruitment.controller.jobposting;
 
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
+import com.group.recruitment.dto.job.JobPostingDetailDTO;
 import com.group.recruitment.service.JobPostingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +44,12 @@ public class JobPostingController {
     public List<JobPostingDTO> searchJobPostings(@RequestParam("keyword") String keyword) {
         return jobPostingService.searchJobPostings(keyword);
     }
+
+    // 채용공고 상세페이지 조회
+    @GetMapping("/jobs/{postingId}")
+    public JobPostingDetailDTO readJobPostingDetail(@PathVariable("postingId") Long postingId) {
+        return jobPostingService.readJobPostingDetail(postingId);
+    }
+
+
 }

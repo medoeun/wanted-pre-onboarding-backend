@@ -1,8 +1,11 @@
 package com.group.recruitment.service;
 
+import com.group.recruitment.domain.company.Company;
 import com.group.recruitment.domain.job.JobPosting;
+import com.group.recruitment.dto.company.CompanyRepository;
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
+import com.group.recruitment.dto.job.JobPostingDetailDTO;
 import com.group.recruitment.dto.job.JobPostingRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +28,9 @@ class JobPostingServiceTest {
 
     @Mock
     private JobPostingRepository jobPostingRepository;
+
+    @Mock
+    private CompanyRepository companyRepository;
 
     @InjectMocks
     private JobPostingService jobPostingService;
@@ -150,6 +156,35 @@ class JobPostingServiceTest {
 
         verify(jobPostingRepository).searchJobPostings(eq("아무거나"));
         assert (result.isEmpty());
+    }
+    
+    // 상세페이지 조회
+    @Test
+    public void testReadJobPostingDetail() {
+        Long postingId = 1L;
+        JobPosting jobPosting = new JobPosting(postingId, 1L, "백엔드 주니어 개발자", "백엔드 개발자를 채용합니다. 자격요건은..", "한국", "서울", 1000000, "Python");
+        Company company = new Company(1L, "원티드랩");
+        List<Long> otherJobPostingIds = Arrays.asList(2L, 3L);
+
+        when(jobPostingRepository.findById(postingId)).thenReturn(Optional.of(jobPosting));
+        when(companyRepository.findById(jobPosting.getCompanyId())).thenReturn(Optional.of(company));
+        when(jobPostingRepository.otherJobPostings(eq(1L), eq(1L))).thenReturn(otherJobPostingIds);
+
+        JobPostingDetailDTO result = jobPostingService.readJobPostingDetail(postingId);
+
+        verify(jobPostingRepository).findById(postingId);
+        verify(companyRepository).findById(jobPosting.getCompanyId());
+        verify(jobPostingRepository).otherJobPostings(eq(1L), eq(1L));
+
+        assert(result.getPostingId().equals(postingId));
+        assert(result.getCompanyName().equals("원티드랩"));
+        assert(result.getCountry().equals("한국"));
+        assert(result.getDistrict().equals("서울"));
+        assert(result.getPosition().equals("백엔드 주니어 개발자"));
+        assert(result.getReward() == 1000000);
+        assert(result.getSkills().equals("Python"));
+        assert(result.getDescription().equals("백엔드 개발자를 채용합니다. 자격요건은.."));
+        assert(result.getOtherJobPostingIds().equals(otherJobPostingIds));
     }
 
 }

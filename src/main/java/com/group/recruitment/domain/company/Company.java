@@ -27,4 +27,9 @@ public class Company {
     public Company(String companyName) {
         this.companyName = companyName;
     }
+
+    public Company(Long companyId, String companyName) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+    }
 }

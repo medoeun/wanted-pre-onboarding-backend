@@ -3,6 +3,7 @@ package com.group.recruitment.controller.jobposting;
 
 import com.group.recruitment.dto.job.CreateJobPostingDTO;
 import com.group.recruitment.dto.job.JobPostingDTO;
+import com.group.recruitment.dto.job.JobPostingDetailDTO;
 import com.group.recruitment.service.JobPostingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class JobPostingControllerTest {
 
     @BeforeEach
     void setUp() {
+        // 전체공고 조회
         List<JobPostingDTO> jobPostings = Arrays.asList(
                 new JobPostingDTO(1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python"),
                 new JobPostingDTO(2L, "네이버", "한국", "판교", "Django 백엔드 개발자", 1000000, "Django")
@@ -45,6 +47,14 @@ class JobPostingControllerTest {
         );
 
         when(jobPostingService.searchJobPostings("백엔드")).thenReturn(searchResults);
+
+        // 상세페이지
+        JobPostingDetailDTO jobPostingDetail = new JobPostingDetailDTO(
+                1L, "원티드랩", "한국", "서울", "백엔드 주니어 개발자", 1500000, "Python", "백엔드 주니어 개발자를 채용합니다.", Arrays.asList(2L)
+        );      // otherJobPostingIds: Arrays.asList(2L)
+
+        when(jobPostingService.readJobPostingDetail(1L)).thenReturn(jobPostingDetail);
+
     }
 
     @Test
@@ -74,4 +84,19 @@ class JobPostingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].companyName").value("원티드랩"));
     }
+
+    @Test
+    public void testReadJobPostingDetails() throws Exception {
+        mockMvc.perform(get("/jobs/{postingId}", 1L))
+                .andExpect(status().isOk()) // 200ok 확인
+                .andExpect(jsonPath("$.companyName").value("원티드랩"))
+                .andExpect(jsonPath("$.country").value("한국"))
+                .andExpect(jsonPath("$.district").value("서울"))
+                .andExpect(jsonPath("$.position").value("백엔드 주니어 개발자"))
+                .andExpect(jsonPath("$.reward").value(1500000))
+                .andExpect(jsonPath("$.skills").value("Python"))
+                .andExpect(jsonPath("$.description").value("백엔드 주니어 개발자를 채용합니다."))
+                .andExpect(jsonPath("$.otherJobPostingIds[0]").value(2L));
+    }
+
 }

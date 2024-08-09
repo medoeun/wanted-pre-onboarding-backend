@@ -23,4 +23,12 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
             "OR j.position LIKE %:keyword% " +
             "OR j.skills LIKE %:keyword%")
     List<JobPostingDTO> searchJobPostings(@Param("keyword") String keyword);
+
+    // 채용공고 상세페이지 조회
+//    @Query("SELECT j FROM JobPosting j WHERE j.postingId = :postingId")
+//    JobPosting findDetailById(@Param("postingId") Long postingId);
+
+    // 회사의 다른 채용공고
+    @Query("SELECT j.postingId FROM JobPosting j WHERE j.companyId = :companyId AND j.postingId <> :postingId")
+    List<Long> otherJobPostings(@Param("companyId") Long companyId, @Param("postingId") Long postingId);
 }
