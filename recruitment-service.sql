@@ -5,16 +5,10 @@ create table company (
     company_name varchar(255)
 );
 
-select * from company;
-drop table company;
-
 create table users (
 	user_id int auto_increment primary key,
     user_name varchar(20)
 );
-
-select * from users;
-drop table users;
 
 CREATE TABLE jobposting (
     posting_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -28,9 +22,6 @@ CREATE TABLE jobposting (
     FOREIGN KEY (company_id) REFERENCES company(company_id)
 );
 
-select * from jobposting;
-drop table jobposting;
-
 create table jobapplication (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     posting_id INT NOT NULL,
@@ -39,21 +30,12 @@ create table jobapplication (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
-select * from jobapplication;
-drop table jobapplication;
-
 INSERT INTO Company (company_name) VALUES
-('테크 이노베이션'),
-('헬스 솔루션즈'),
-('그린 에너지'),
-('퀀텀 애널리틱스'),
-('글로벌 테크 어드밴스먼트');
-
-UPDATE Company SET company_name = "원티드랩" WHERE company_id = 3;
-UPDATE Company SET company_name = "원티드코리아" WHERE company_id = 1;
-UPDATE Company SET company_name = "네이버" WHERE company_id = 2;
-UPDATE Company SET company_name = "카카오" WHERE company_id = 4;
-UPDATE Company SET company_name = "인프런" WHERE company_id = 5;
+('원티드코리아'),
+('네이버'),
+('원티드랩'),
+('카카오'),
+('인프런');
 
 INSERT INTO Users (user_name) VALUES
 ('김지은'),
@@ -62,4 +44,3 @@ INSERT INTO Users (user_name) VALUES
 ('최재혁'),
 ('정하나');
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'abcd123';
